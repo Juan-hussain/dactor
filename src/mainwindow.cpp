@@ -306,3 +306,19 @@ void MainWindow::postpareTable()
 //    }
 }
 
+
+void MainWindow::on_ltr_clicked()
+{
+    for (int r=0;r<ui->table->rowCount();++r) {
+        if (ui->table->columnCount()<=stm->STM_UTT_IDX) continue;
+        ui->table->item(r, stm->STM_UTT_IDX)->setTextAlignment(Qt::AlignLeft);
+    }
+}
+
+void MainWindow::on_rtl_clicked()
+{
+    for (int r=0;r<ui->table->rowCount();++r) {
+        if (ui->table->columnCount()<=stm->STM_UTT_IDX) continue;
+        ui->table->item(r, stm->STM_UTT_IDX)->setTextAlignment(Qt::AlignRight);
+    }
+}

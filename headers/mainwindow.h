@@ -109,6 +109,8 @@ private slots:
     void key_previous();
     void on_rec_clicked();
     void on_play_clicked();
+    void on_ltr_clicked();
+    void on_rtl_clicked();
 };
 
 
