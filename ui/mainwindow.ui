@@ -53,7 +53,7 @@ border-radius: 7px;
 border-bottom-left-radius: 7px;
 background:  rgb(120,120,120);
 width:35px;
-margin: 48px 0 48px 0;
+margin: 40px 0 40px 0;
 }
 
 QScrollBar::handle:vertical {
@@ -62,7 +62,7 @@ border: 3px solid #5E749C;
 padding: 0px;
 border-radius: 7px;
 border-bottom-left-radius: 7px;
-min-height: 40px;
+min-height: 90px;
 }
 QScrollBar::add-line:vertical {
 background: rgb(150,150,150);
@@ -231,57 +231,7 @@ background: none;
                       <property name="verticalSpacing">
                        <number>0</number>
                       </property>
-                      <item row="0" column="5">
-                       <widget class="QPushButton" name="text_plus">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>30</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>100</width>
-                          <height>100</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QPushButton#text_plus{
-	image: url(:icons/size_plus_empty.svg);
-     border-style: solid;
-     border-width: 0px;
-     border-color: gray;
-}
-#text_plus:hover{
-	 image: url(:icons/size_plus_full.svg);
-}</string>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label">
-                        <property name="font">
-                         <font>
-                          <pointsize>9</pointsize>
-                          <weight>75</weight>
-                          <bold>true</bold>
-                         </font>
-                        </property>
-                        <property name="text">
-                         <string>  Text to read</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="3">
+                      <item row="0" column="2">
                        <widget class="QPushButton" name="ltr">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -303,6 +253,9 @@ background: none;
                           <bold>false</bold>
                          </font>
                         </property>
+                        <property name="focusPolicy">
+                         <enum>Qt::NoFocus</enum>
+                        </property>
                         <property name="styleSheet">
                          <string notr="true">QPushButton#ltr{
 border: 0px;
@@ -318,23 +271,7 @@ font:bold;
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="7">
-                       <spacer name="horizontalSpacer_6">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeType">
-                         <enum>QSizePolicy::Fixed</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>20</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="0" column="6">
+                      <item row="0" column="5">
                        <widget class="QPushButton" name="text_minus">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -354,6 +291,9 @@ font:bold;
                           <height>95</height>
                          </size>
                         </property>
+                        <property name="focusPolicy">
+                         <enum>Qt::NoFocus</enum>
+                        </property>
                         <property name="styleSheet">
                          <string notr="true">QPushButton#text_minus{
 	image: url(:icons/size_minus_empty.svg);
@@ -370,20 +310,7 @@ font:bold;
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="1">
-                       <spacer name="horizontalSpacer_5">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="0" column="4">
+                      <item row="0" column="3">
                        <widget class="QPushButton" name="rtl">
                         <property name="maximumSize">
                          <size>
@@ -399,6 +326,9 @@ font:bold;
                           <bold>false</bold>
                          </font>
                         </property>
+                        <property name="focusPolicy">
+                         <enum>Qt::NoFocus</enum>
+                        </property>
                         <property name="styleSheet">
                          <string notr="true">QPushButton#rtl{
 border: 0px;
@@ -410,6 +340,74 @@ font:bold;
                         </property>
                         <property name="text">
                          <string>&lt;T</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="6">
+                       <spacer name="horizontalSpacer_6">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Fixed</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item row="0" column="0">
+                       <spacer name="horizontalSpacer_5">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item row="0" column="4">
+                       <widget class="QPushButton" name="text_plus">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>30</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>100</width>
+                          <height>100</height>
+                         </size>
+                        </property>
+                        <property name="focusPolicy">
+                         <enum>Qt::NoFocus</enum>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton#text_plus{
+	image: url(:icons/size_plus_empty.svg);
+     border-style: solid;
+     border-width: 0px;
+     border-color: gray;
+}
+#text_plus:hover{
+	 image: url(:icons/size_plus_full.svg);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string/>
                         </property>
                        </widget>
                       </item>
@@ -439,6 +437,9 @@ font:bold;
                        <width>82</width>
                        <height>0</height>
                       </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
                      </property>
                      <property name="styleSheet">
                       <string notr="true"/>
@@ -536,6 +537,9 @@ font:bold;
                        <height>16777213</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QPushButton#up{
 	image: url(:/icons/arrow_up.svg);
@@ -567,6 +571,9 @@ font:bold;
                        <width>16777215</width>
                        <height>16777213</height>
                       </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
                      </property>
                      <property name="styleSheet">
                       <string notr="true">QPushButton#down{
@@ -640,13 +647,13 @@ font:bold;
                <number>0</number>
               </property>
               <property name="topMargin">
-               <number>0</number>
+               <number>5</number>
               </property>
               <property name="rightMargin">
                <number>0</number>
               </property>
               <property name="bottomMargin">
-               <number>0</number>
+               <number>2</number>
               </property>
               <item row="0" column="0">
                <layout class="QGridLayout" name="gridLayout_3">
@@ -686,19 +693,38 @@ font:bold;
                     <height>100</height>
                    </size>
                   </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
                   <property name="styleSheet">
-                   <string notr="true">QPushButton#play{
-	 image: url(:icons/play_empty.svg);
-	 border-style: solid;
-     border-width: 0px;
+                   <string notr="true">QPushButton#play:checked{
+ image: url(:icons/stop_empty.svg);
+ border-style: solid;
+ border-width: 0px;
+ border-color: gray;
 }
-#play:hover{
-	 image: url(:icons/play_full.svg)
+#play:hover::checked{
+ image: url(:icons/stop_full.svg);
+}
+QPushButton#play:!checked{
+image: url(:icons/play_empty.svg);  
+border-style: solid; 
+border-width: 0px; 
+border-color: gray;
+}
+ #play:hover:!checked{
+image: url(:icons/play_full.svg);
 }
 </string>
                   </property>
                   <property name="text">
                    <string/>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="checked">
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -763,28 +789,43 @@ font:bold;
                     <bold>false</bold>
                    </font>
                   </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
                   <property name="layoutDirection">
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true"> QPushButton#rec {
-	 image: url(:icons/mic_button.png);
-     border-style: solid;
-     border-width: 0px;
-     border-color: gray;
- }
-#rec:hover{
-	 image: url(:icons/mic_hover.png)
+                   <string notr="true">QPushButton#rec:checked{
+image: url(:icons/mic_released_full.png);
+  border-style: solid; 
+border-width: 0px; 
+border-color: gray;
 }
-#rec:pressed{
-	 image: url(:icons/mic_pressed.png)
+ #rec:hover:checked{
+image: url(:icons/mic_released_hover.png);
 }
-#rec:released{
-	 image: url(:mic_released.png)
-}</string>
+ #rec:pressed:checked{
+image: url(:icons/mic_released_pressed.png);
+}
+QPushButton#rec:!checked{
+image: url(:icons/mic_button.png);
+  border-style: solid;
+ border-width: 0px; border-color: gray;
+}
+ #rec:hover:!checked{
+image: url(:icons/mic_hover.png);
+} 
+#rec:pressed:checked{
+image: url(:icons/mic_pressed.png);
+}
+</string>
                   </property>
                   <property name="text">
                    <string>    Start</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
                   </property>
                   <property name="flat">
                    <bool>true</bool>
@@ -827,6 +868,9 @@ font:bold;
                     <height>100</height>
                    </size>
                   </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton#settings{
 	 image: url(:icons/settings.svg);
@@ -864,6 +908,9 @@ font:bold;
                     <width>100</width>
                     <height>100</height>
                    </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton#next{
@@ -903,6 +950,9 @@ font:bold;
                     <width>100</width>
                     <height>100</height>
                    </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton#add_user{

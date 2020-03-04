@@ -30,8 +30,6 @@ private:
     QState *rerec;
     QState *play;
     QState *mainState;
-    QShortcut *key_space;
-    QShortcut *key_enter;
     Ui::MainWindow* ui;
     QStateMachine machine;
     AudioRecorder recorder;

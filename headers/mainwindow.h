@@ -66,7 +66,8 @@ private slots:
     User* log_in(bool isInitial);
 
     bool end_of_table(bool look_upwards);
-
+    void key_space_pressed();
+    void key_enter_pressed();
 
 private:
     Ui::MainWindow *ui;
@@ -77,6 +78,8 @@ private:
     QShortcut *key_left;
     QShortcut *key_up;
     QShortcut *key_space;
+    QShortcut *key_enter;
+
     // define the minimal and maximal allowed font sizes
     const int min_font_size = 10;
     const int max_font_size = 34;
@@ -89,7 +92,7 @@ private:
     LogInForm *logInForm;
     UserRecords* userRecords;
 
-    bool recOddClick = true;
+//    bool recOddClick = true;
     bool playOddClick = true;
     void prepareTable();
     void postpareTable();
@@ -107,7 +110,7 @@ private slots:
 
     void key_next();
     void key_previous();
-    void on_rec_clicked();
+//    void on_rec_clicked();
     void on_play_clicked();
     void on_ltr_clicked();
     void on_rtl_clicked();

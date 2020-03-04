@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>200</height>
+    <width>300</width>
+    <height>150</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,15 +18,18 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>200</height>
+    <width>200</width>
+    <height>100</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>800</width>
-    <height>400</height>
+    <width>300</width>
+    <height>150</height>
    </size>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -58,14 +61,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Log in if you already have an account or  register new one</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string/>
+        <string>Log in if you already have an account or register new one</string>
        </property>
       </widget>
      </item>

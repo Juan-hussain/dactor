@@ -79,10 +79,6 @@ RecStateMachine::RecStateMachine(Ui::MainWindow *ui, StmManager *stm):
 
     mainState->addTransition(this,SIGNAL(finished()),final);
 
-    //prperties
-    //idle->assignProperty(ui->rec,"text","Start");
-    //rec->assignProperty(ui->rec,"text", "stop");
-
     // connect to state entered signal
     connect(idle, SIGNAL(entered()), this, SLOT(idle_entered()));
     connect(rec, SIGNAL(entered()), this, SLOT(rec_entered()));
@@ -95,11 +91,6 @@ RecStateMachine::RecStateMachine(Ui::MainWindow *ui, StmManager *stm):
     connect(rec, SIGNAL(exited()), this, SLOT(rec_exited()));
     connect(play, SIGNAL(exited()), this, SLOT(replay_exited()));
     connect(mainState, SIGNAL(exited()), this, SLOT(mainState_exited()));
-    key_space = new QShortcut(QKeySequence(Qt::Key_Space), ui->centralWidget);
-    key_enter = new QShortcut(QKeySequence(Qt::Key_Return), ui->centralWidget);
-
-    connect(key_space, SIGNAL(activated()), ui->rec, SIGNAL(clicked()));
-    connect(key_enter, SIGNAL(activated()), ui->play, SIGNAL(clicked()));
 
     //add the states
     machine.setInitialState(mainState);
@@ -180,8 +171,6 @@ void RecStateMachine::rerec_entered()
 
     enable_ui_elements(0,false);
 
-    ui->rec->setStyleSheet("QPushButton#rec{image: url(:icons/mic_released_full.png);  border-style: solid; border-width: 0px; border-color: gray;} #rec:hover{image: url(:icons/mic_released_hover.png);} #rec:pressed{image: url(:icons/mic_released_pressed.png);}");
-
     //connect(ui->table, SIGNAL(currentCellChanged(int, int, int, int)), this, SLOT(save_current(int, int, int, int)));
 
     currentRow = ui->table->currentRow();
@@ -199,14 +188,11 @@ void RecStateMachine::replay_entered()
 
     ui->table->setFocus();
 
-    ui->play->setStyleSheet("QPushButton#play{image: url(:icons/stop_empty.svg);  border-style: solid; border-width: 0px; border-color: gray;} #play:hover{image: url(:icons/stop_full.svg);}");
-
     int curr_row = ui->table->currentRow();
     double from = ui->table->item(curr_row, stm->STM_FROM_IDX)->data(Qt::DisplayRole).toDouble();
     double to = ui->table->item(curr_row, stm->STM_TO_IDX)->data(Qt::DisplayRole).toDouble();
 
     recorder.play(from, to);
-    //    replay_timer->setInterval((byteTo - byteFrom)*1000/recorder.getBytePerSec());
     replay_timer->setInterval(static_cast<int>((to-from)*1000));
     replay_timer->setSingleShot(true);
     connect(replay_timer, SIGNAL(timeout()), SLOT(replay_stop()));
@@ -232,11 +218,9 @@ void RecStateMachine::idle_exited()
 void RecStateMachine::rec_exited()
 {
     qDebug()<<"rec_finished";
-    qDebug()<<"curr row: "<< currentRow;
 
     //stm update row, col, time
     stm->updateTableAndStm(currentRow, stm->STM_TO_IDX, QString::number(recorder.getBufferPos()/recorder.getBytePerSec()));
-    qDebug()<<"curr col: "<<ui->table->currentColumn()<<" curr row: "<< ui->table->currentRow();
     recorder.save(wavFile);
     ui->table->resizeColumnsToContents();
     enable_ui_elements(0,true);
@@ -252,8 +236,6 @@ void RecStateMachine::rerec_exited()
 {
     qDebug()<<"rerec_exited";
     qDebug()<<"curr row: "<< currentRow;
-
-    ui->rec->setStyleSheet("QPushButton#rec{image: url(:icons/mic_button.png);  border-style: solid; border-width: 0px; border-color: gray;} #rec:hover{image: url(:icons/mic_hover.png);} #rec:pressed{image: url(:icons/mic_pressed.png);}");
 
     int from,to;
     FromToSecond2byte(currentRow,from,to);
@@ -307,10 +289,8 @@ void RecStateMachine::replay_exited()
     replay_timer->stop();
 
     recorder.pausePlaying();
+    ui->play->setChecked(false);
 
-    ui->rec->setEnabled(true);
-
-    ui->play->setStyleSheet("QPushButton#play{image: url(:icons/play_empty.svg);  border-style: solid; border-width: 0px; border-color: gray;} #play:hover{image: url(:icons/play_full.svg);}");
     enable_ui_elements(1,true);
 }
 
@@ -348,50 +328,3 @@ void RecStateMachine::saveCleanedRecording()
     recorder.saveBuff2file(wavFile);
     stm->toSTM();
 }
-
-//void RecStateMachine::saveCleanedRecording()
-//{
-//    qDebug()<<"RecStateMachine::saveCleanedRecording()";
-//    recorder.clearSaveBuff();
-//    int byteFrom, byteTo;
-//    QString prevTo, prevFrom,blockFrom, blockTo;
-//    bool isBlockFromSet = false;
-//    for(int row=0; row<ui->table->rowCount(); row++){
-//        if(stm->isRecorded(row)){
-//            // begin check if necessery to rearange or wait until it needed
-//            QString from = ui->table->item(row, stm->STM_FROM_IDX)->data(Qt::DisplayRole).toString();
-//            QString to = ui->table->item(row, stm->STM_TO_IDX)->data(Qt::DisplayRole).toString();
-//            if (from==prevTo) {
-//                blockTo = to;
-//                if (!isBlockFromSet) {
-//                    blockFrom = prevFrom;
-//                    isBlockFromSet = true;
-//                }
-//                prevFrom = from;
-//                prevTo = to;
-//                continue;
-//            }
-//            prevFrom = from;
-//            prevTo = to;
-
-//            if (isBlockFromSet) {
-//                to = blockTo;
-//                from = blockFrom;
-//                isBlockFromSet = false;
-//            }
-//            // end of block checking
-//            byteFrom = static_cast<int>(from.toDouble()*recorder.getBytePerSec());
-//            byteTo = static_cast<int>(to.toDouble()*recorder.getBytePerSec());
-//            recorder.correctByteIndex(byteFrom,byteTo);
-//            double newFrom = recorder.getSaveBufferPos();
-//            if (!recorder.savePart2Buff(byteFrom,byteTo)){ continue;}
-//            stm->updateTable(row, stm->STM_FROM_IDX, QString::number(newFrom/recorder.getBytePerSec()));
-//            double newTo = recorder.getSaveBufferPos();
-//            stm->updateTable(row, stm->STM_TO_IDX, QString::number(newTo/recorder.getBytePerSec()));
-
-//        }
-//    }
-//    //it is important to finish saving audio before the time informaion
-//    recorder.saveBuff2file(wavFile);
-//    stm->toSTM();
-//}

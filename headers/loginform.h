@@ -47,7 +47,6 @@ private:
     QString userWorkingDir;
     User *user = nullptr;
 
-//    QSettings *savedSettings
     void select_text();
     void assignUserStm(int user_index,QString stmFilename);
 

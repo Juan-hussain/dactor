@@ -102,7 +102,9 @@ MainWindow::MainWindow(QWidget *parent):
     key_down = new QShortcut(QKeySequence(Qt::Key_Down), ui->centralWidget);
     key_left = new QShortcut(QKeySequence(Qt::Key_Left), ui->centralWidget);
     key_up = new QShortcut(QKeySequence(Qt::Key_Up), ui->centralWidget);
-//    key_space = new QShortcut(QKeySequence(Qt::Key_Space), ui->centralWidget);
+    key_space = new QShortcut(QKeySequence(Qt::Key_Space), ui->centralWidget);
+    key_enter = new QShortcut(QKeySequence(Qt::Key_Return), ui->centralWidget);
+
 //    QShortcut key_space(QKeySequence(Qt::Key_Space), ui->centralWidget);
 
     connect(key_right, SIGNAL(activated()), this, SLOT(key_next()));
@@ -112,7 +114,8 @@ MainWindow::MainWindow(QWidget *parent):
     connect(ui->up, SIGNAL(clicked()), this, SLOT(key_previous()));
     connect(ui->down, SIGNAL(clicked()), this, SLOT(key_next()));
 //    connect(ui->rec, SIGNAL(clicked()), this, SLOT(on_rec_clicked()));
-//    connect(key_space, SIGNAL(activated()), this, SLOT(on_rec_clicked()));
+    connect(key_space, SIGNAL(activated()), this, SLOT(key_space_pressed()));
+    connect(key_enter, SIGNAL(activated()), this, SLOT(key_enter_pressed()));
 
     resize(1900,1300);
     this->setWindowTitle("DaCToR");
@@ -158,18 +161,6 @@ void MainWindow::on_settings_clicked()
     }
     initWindow(user,selected_text);
 }
-void MainWindow::on_rec_clicked()
-{
-    //emit record_button_clicked();
-    qDebug()<<"rec clicked";
-    if (recOddClick) {
-        ui->rec->setStyleSheet("QPushButton#rec{image: url(:icons/mic_released_full.png);  border-style: solid; border-width: 0px; border-color: gray;} #rec:hover{image: url(:icons/mic_released_hover.png);} #rec:pressed{image: url(:icons/mic_released_pressed.png);}");
-        recOddClick = false;
-    } else {
-        ui->rec->setStyleSheet("QPushButton#rec{image: url(:icons/mic_button.png);  border-style: solid; border-width: 0px; border-color: gray;} #rec:hover{image: url(:icons/mic_hover.png);} #rec:pressed{image: url(:icons/mic_pressed.png);}");
-        recOddClick = true;
-    }
-}
 void MainWindow::on_play_clicked()
 {
     qDebug()<<"play clicked";
@@ -211,6 +202,7 @@ void MainWindow::key_next()
     qDebug()<<" MainWindow::key_next(): isEndReached"<< isEndReached;
     if (isEndReached){
         ui->table->setCurrentCell(ui->table->currentRow(), 5);
+        ui->rec->setChecked(false);
     }
     else {
         ui->table->setCurrentCell(ui->table->currentRow()+1, 5);
@@ -226,6 +218,7 @@ void MainWindow::key_previous()
 
     if (isEndReached){
         ui->table->setCurrentCell(ui->table->currentRow(), 5);
+        ui->rec->setChecked(false);
     }
     else{
         ui->table->setCurrentCell(ui->table->currentRow()-1, 5);
@@ -252,6 +245,16 @@ bool MainWindow::end_of_table(bool look_upwards)
         }else
             return false;
     }
+}
+
+void MainWindow::key_space_pressed()
+{
+    ui->rec->click();
+}
+
+void MainWindow::key_enter_pressed()
+{
+    ui->play->click();
 }
 
 void MainWindow::prepareTable()
