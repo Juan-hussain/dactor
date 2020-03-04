@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>textFiles/sample1.txt</file>
+        <file>textFiles/sample2.txt</file>
+        <file>textFiles/sample3.txt</file>
+        <file>textFiles/sample4.txt</file>
+        <file>textFiles/sample5.txt</file>
+        <file>textFiles/sample6.txt</file>
+        <file>textFiles/sample7.txt</file>
+        <file>textFiles/sample8.txt</file>
+        <file>textFiles/sample9.txt</file>
+        <file>textFiles/sample10.txt</file>
+    </qresource>
+</RCC>
