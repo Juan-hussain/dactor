@@ -62,7 +62,10 @@ bool UserRecords::containUser(QString username)
     QSqlQuery query;
     query.prepare("SELECT 1 FROM userRecords WHERE username =:username");
     query.bindValue(":username",username);
-    return !query.exec();
+    query.exec();
+    if (query.first())
+        return true;
+    return false;
 }
 bool UserRecords::addUser(QString username)
 {

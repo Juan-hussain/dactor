@@ -58,7 +58,7 @@ void speakerProfileForm::on_cancel_clicked()
 
 bool speakerProfileForm::is_available(QString newName)
 {
-    return userRecords->containUser(newName);
+    return !userRecords->containUser(newName);
 }
 bool speakerProfileForm::isValidGender()
 {
