@@ -161,6 +161,18 @@ void AudioRecorder::clearSaveBuff()
     saveBuff.buffer().clear();
     saveBuff.seek(0);
 }
+
+double AudioRecorder::getRecLength()
+{
+    long long newLength = rdBuff.size();
+    return newLength/bytePerSec;
+}
+
+double AudioRecorder::getSaveLength()
+{
+    long long newLength = saveBuff.size();
+    return newLength/bytePerSec;
+}
 void AudioRecorder::save(QString path)
 {
     clearSaveBuff();

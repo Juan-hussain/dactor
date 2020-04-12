@@ -43,7 +43,7 @@ private:
     void saveCleanedRecording();
     void changeRowColor();
     void FromToSecond2byte(int row, int& byteFrom,int& byteTo);
-
+    void resizeTable();
 
 public:
     RecStateMachine(Ui::MainWindow *ui, StmManager *stm);
@@ -72,7 +72,7 @@ signals:
     void end_replay();
     void already_recorded();
     void endOfTable();
-    void finished();
+    void stoping_machine();
 
 };
 #endif // RECSTATEMACHINE_H

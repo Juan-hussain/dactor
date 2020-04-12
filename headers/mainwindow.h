@@ -59,7 +59,7 @@ private slots:
     void on_settings_clicked();
     void closeEvent( QCloseEvent *event);
 
-    void initWindow(User* user,QString path_to_text);
+    bool initWindow(User* user,QString path_to_text);
 
     void on_add_user_clicked();
 
@@ -68,6 +68,7 @@ private slots:
     bool end_of_table(bool look_upwards);
     void key_space_pressed();
     void key_enter_pressed();
+    void cellClickedCallback();
 
 private:
     Ui::MainWindow *ui;

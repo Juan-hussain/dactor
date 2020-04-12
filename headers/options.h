@@ -34,8 +34,10 @@ const QString USER_PROFILE_PATH = USER_WORKING_DIR + SPEAKER_PROFILE_FILENAME;
 
 
 //Messages
-const QString WARNING_TEXT_FILE_NOT_FOUND = "The specified file was not found!\n"
+const QString WARNING_TEXT_FILE_NOT_FOUND = "no text file found!\n"
                                              "Please choose new text file";
+const QString WARNING_WAV_FILE_NOT_FOUND = "no wave file found!\n"
+                                             "Please choose new wave file";
 const QString WARNING_CLOSE_IF_CANCEL = "By canceling the program will end! Procceed anyway?\n";
 const QString WARNING_CORRECT_ENTRIES = "Please correct the following entries: \n\n";
 const QString ERROR_GENDER = "- Gender \n";

@@ -62,6 +62,8 @@ RecStateMachine::RecStateMachine(Ui::MainWindow *ui, StmManager *stm):
         idle->addTransition(ui->rec, SIGNAL(clicked()),rec);
         idle->addTransition(ui->play, SIGNAL(clicked()),play);
         rec->addTransition(ui->table, SIGNAL(currentCellChanged(int, int, int, int)),rec);
+        //rec->addTransition(ui->table, SIGNAL(itemSelectionChanged()),rec);
+
     }
 
     rec->addTransition(ui->rec, SIGNAL(clicked()),idle);
@@ -77,7 +79,7 @@ RecStateMachine::RecStateMachine(Ui::MainWindow *ui, StmManager *stm):
     //play->addTransition(ui->table, SIGNAL(itemSelectionChanged()), play);
     //play->addTransition(this, SIGNAL(endOfTable()), idle); to
 
-    mainState->addTransition(this,SIGNAL(finished()),final);
+    mainState->addTransition(this,SIGNAL(stoping_machine()),final);
 
     // connect to state entered signal
     connect(idle, SIGNAL(entered()), this, SLOT(idle_entered()));
@@ -95,7 +97,11 @@ RecStateMachine::RecStateMachine(Ui::MainWindow *ui, StmManager *stm):
     //add the states
     machine.setInitialState(mainState);
 }
-
+void RecStateMachine::resizeTable()
+{
+    ui->table->resizeRowsToContents();
+    ui->table->resizeColumnsToContents();
+}
 void RecStateMachine::init(QString wavFile)
 {
     this->wavFile = wavFile;
@@ -104,22 +110,25 @@ void RecStateMachine::init(QString wavFile)
     recorder.init();
     recorder.reset();
 
+    resizeTable();
+
     if (!QFile(wavFile).exists())
         qDebug()<< "RecStateMachine::init(): There is no audio file.. load one";
     else
         recorder.load_audio(wavFile);
-
-    if (machine.isRunning()) {
-        stop();
-        QEventLoop loop;
-        connect(this, SIGNAL(finished()), &loop, SLOT(quit()));
-    }
+    Q_ASSERT(!machine.isRunning());
+//    if (machine.isRunning()) {
+//        stop();
+//        QEventLoop loop;
+//        connect(&machine, SIGNAL(finished()), &loop, SLOT(quit()));
+//    }
     machine.start();
 }
 
 void RecStateMachine::stop()
 {
-    emit finished();
+    emit stoping_machine();
+    //machine.stop(); this send the signal finish but the machine still running and final does not enter
     QEventLoop loop;
     connect(&machine, SIGNAL(finished()), &loop, SLOT(quit()));
     qDebug()<< "machine running: "<< machine.isRunning();
@@ -154,13 +163,12 @@ void RecStateMachine::enable_ui_elements(int state,bool t_f)
 void RecStateMachine::rec_entered()
 {
     qDebug()<<"rec_entered";
-    ui->table->setFocus();
+    //ui->table->setFocus();
     enable_ui_elements(0,false);
 
     recorder.record();
     currentRow = ui->table->currentRow();
     qDebug()<<"curr row: "<< currentRow;
-
     stm->updateTable(currentRow, stm->STM_FROM_IDX, QString::number(recorder.getBufferPos()/recorder.getBytePerSec()));
 }
 
@@ -222,8 +230,11 @@ void RecStateMachine::rec_exited()
     //stm update row, col, time
     stm->updateTableAndStm(currentRow, stm->STM_TO_IDX, QString::number(recorder.getBufferPos()/recorder.getBytePerSec()));
     recorder.save(wavFile);
-    ui->table->resizeColumnsToContents();
+    //ui->table->resizeColumnsToContents();
+    //ui->table->resizeRowsToContents();
+
     enable_ui_elements(0,true);
+    //resizeTable();
 }
 void RecStateMachine::changeRowColor()
 {

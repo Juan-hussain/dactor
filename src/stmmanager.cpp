@@ -7,7 +7,7 @@ StmManager::StmManager(QTableWidget *tw)
 bool StmManager::initExistedSTM(QString spk,QString wav,QString newSTMFile)
 {
     this->spk = spk;
-    this->wav = wav;
+    this->wav = wav.replace(' ','_');
     this->stmFilename = newSTMFile;
 
     QFileInfo stmFile_info(stmFilename);
@@ -16,13 +16,14 @@ bool StmManager::initExistedSTM(QString spk,QString wav,QString newSTMFile)
     if (stmFile_info.exists()) {
         return fromSTM();
     }
+    return false;
 }
 
 bool StmManager::initNewSTM(QString spk,QString wav, QString txtFile, QString newSTMFile)
 {
 
     this->spk = spk;
-    this->wav = wav;
+    this->wav = wav.replace(' ','_');
     this->stmFilename = newSTMFile;
 
     QFileInfo txtFile_info(txtFile);
@@ -90,7 +91,7 @@ bool StmManager::fromSTM()//QTableWidget *& tw, QString stmFilename)
 
         r++;
     }
-    tw->resizeColumnsToContents();
+    //tw->resizeColumnsToContents();
     stmFile.close();
     return true;
 }
@@ -117,6 +118,7 @@ bool StmManager::toSTM()//QTableWidget *&tw, QString stmFilename)
     QTextStream out(&stmFile);
     out.setCodec(QTextCodec::codecForName("UTF-8"));
     out << textData.toUtf8();
+    //tw->resizeColumnsToContents();
     stmFile.close();
     return true;
 }
@@ -138,7 +140,7 @@ bool StmManager::cleanToSTM(AudioRecorder* recorder,QString wavFile)//QTableWidg
             if (!recorder->savePart2Buff(from,to)){ continue;}
             newTo = recorder->getSaveBufferPos()/recorder->getBytePerSec();
             //+++++++++++++++++++++++
-            QString tokens[STM_COL];
+            QString *tokens = new QString[STM_COL];
             Q_ASSERT(columns==STM_COL);
 
             for (int j = 0; j < columns; j++) {
@@ -171,7 +173,23 @@ bool StmManager::cleanToSTM(AudioRecorder* recorder,QString wavFile)//QTableWidg
         }
         textData += "\r\n";             // (optional: for new line segmentation)
     }
-
+    if (recorder->getSaveLength()<10 /*second*/) {
+        qDebug()<<"no clean, length <10 s";
+        return false;
+    }
+    qDebug()<<"recorder->getRecLength()"<<recorder->getRecLength();
+    qDebug()<<"recorder->getSaveLength()"<<recorder->getSaveLength();
+    double deletePercent = 100 - recorder->getSaveLength()*100/recorder->getRecLength();
+    if(deletePercent>1){
+        int res = QMessageBox::question(tw ,"Warning",
+                                        "about <font color=\"red\" size=\"+5\">" + QString::number(deletePercent,'f',0) + "%</font> of the file will be cleaned while deleting the unused segments. If you cancel you can do it later by open the stm again. The cleaning is then run when closing it",
+                                        QMessageBox::Ok, QMessageBox::Cancel);
+        if (res == QMessageBox::Cancel) {
+            return false;
+        }
+    } else {
+        return false;
+    }
     recorder->saveBuff2file(wavFile);
 
     QFile stmFile(stmFilename);
@@ -242,7 +260,7 @@ bool StmManager::updateTable(int row,int col, QString item)
 
     //    tw->item(row, STM_FROM_IDX)->setFlags(Qt::ItemIsEditable);
     //    tw->item(row, STM_TO_IDX)->setFlags(Qt::ItemIsEditable);
-    return true;    
+    return true;
 }
 
 bool StmManager::updateTableAndStm(int row,int col, QString item)

@@ -23,60 +23,96 @@ User* MainWindow::log_in(bool closeIfCancel){
     return logInForm->getUser();
 }
 
-void MainWindow::initWindow(User* user, QString path_to_text)
-{   
+bool MainWindow::initWindow(User* user, QString path_to_text)
+{
+    recStateMachine->stop();
+    QString wavFile = init_stm(path_to_text);
+    if(wavFile=="")
+        return false;
+
     tableFont.setPointSize(12);
 
     ui->next->setVisible(false);
 
     prepareTable(); // there is also postpareTable() after filling it.
 
-    QString filename_base = init_stm(path_to_text);
-
     QString stmFile = stm->getStmFilename();
     user->setStmFile(stmFile);
     userRecords->setUserStm(user->getUsername(),stmFile);
     postpareTable();
-    QString wavFilename = filename_base+".wav";
-    QString wavFile = user->getUserAudioDir() +options::PATH_SEP+ wavFilename;
 
     recStateMachine->init(wavFile);
+    return true;
 }
 
 QString MainWindow::init_stm(QString path_to_text)
 {
-    QString filename_base;
+    /* the cases to look at:
+     * 1. empty path (login or change user)
+     *    a. user has stm (existed user): load this
+     *    b. no stm (new user): choose text
+     * 2. no empty path (selected text or stm)
+     *    a. text file:
+     *        I. exists stm: load
+     *        II. no stm: make one
+     *    b. stm file:
+     *        I. exits wav : load
+     *        II. no wav: file dialog
+     */
+
     QString stmFile;
-    if (path_to_text!="") {
-        QFileInfo txtFile_info(path_to_text);
-        filename_base = txtFile_info.completeBaseName();
-        stmFile = user->getUserStmDir()+ options::PATH_SEP + filename_base +".stm";
-    } else {
-        stmFile = user->getStmFile();
-    }
-
-    if  (QFile::exists(stmFile)){
-        QFileInfo stmFile_info(stmFile);
-        filename_base = stmFile_info.completeBaseName();
-        QString wavFilenameBase = filename_base;
-        stm->initExistedSTM(user->getUsername(),wavFilenameBase,stmFile);
-    } else {
-        while (!QFile::exists(path_to_text)){
-            cout << "Text file not found!" << endl;
-            QMessageBox::warning(this, tr("Warning"),
+    QString userstmFile = user->getStmFile();
+    while (!QFile::exists(path_to_text) && !QFile::exists(userstmFile)) {
+            cout << "Text or STM file not found!" << endl;
+            int res = QMessageBox::warning(this, tr("Warning"),
                                  options::WARNING_TEXT_FILE_NOT_FOUND,
-                                 QMessageBox::Ok, QMessageBox::Ok);
-            // show the setting to reselect the texts folder
+                                 QMessageBox::Ok, QMessageBox::Cancel);
+            if (res == QMessageBox::Cancel) {
+                return "";
+            }
             path_to_text = select_text();
-        }
-        QFileInfo txtFile_info(path_to_text);
-        filename_base = txtFile_info.completeBaseName();
-        QString wavFilenameBase = filename_base;
-        QString stmFilename = user->getUserStmDir()+ options::PATH_SEP + filename_base +".stm";
-        stm->initNewSTM(user->getUsername(), wavFilenameBase, path_to_text,stmFilename);
+     }
 
+    QFileInfo txtFile_info(path_to_text);
+    QString directory = txtFile_info.absolutePath();
+    QString filename_base = txtFile_info.completeBaseName();
+    QString ext = txtFile_info.completeSuffix();
+    QString wavFilenameBase = filename_base+".wav";
+    QString wavFile = user->getUserAudioDir() +options::PATH_SEP+ wavFilenameBase;
+    if (ext == "stm") {
+            QString filename_base = txtFile_info.completeBaseName();
+            stmFile = path_to_text;
     }
-    return  filename_base;
+    else if (ext == "txt") {
+            stmFile = user->getUserStmDir()+ options::PATH_SEP + filename_base +".stm";
+            stm->initNewSTM(user->getUsername(), wavFilenameBase, path_to_text,stmFile);
+            return  wavFile;
+    }
+
+    else if (QFile::exists(userstmFile)) {
+        stmFile = userstmFile;
+        QFileInfo stmFile_info(userstmFile);
+        filename_base = stmFile_info.completeBaseName();
+        wavFilenameBase = filename_base+".wav";
+        wavFile = user->getUserAudioDir() +options::PATH_SEP+ wavFilenameBase;
+    }
+
+    while (!QFile::exists(wavFile)) {
+            cout << "wav file not found!" << endl;
+            int res = QMessageBox::warning(this, tr("Warning"),
+                                 options::WARNING_WAV_FILE_NOT_FOUND,
+                                 QMessageBox::Ok, QMessageBox::Cancel);
+            if (res == QMessageBox::Cancel) {
+                return "";
+            }
+            wavFile = QFileDialog::getOpenFileName(this, tr("Open Directory"), directory,
+                                                            tr("WAV files (*.wav)"));
+            QFileInfo wavFile_info(wavFile);
+            wavFilenameBase = wavFile_info.completeBaseName();
+    }
+
+    stm->initExistedSTM(user->getUsername(),wavFilenameBase,stmFile);
+    return  wavFile;
 }
 
 
@@ -116,6 +152,8 @@ MainWindow::MainWindow(QWidget *parent):
 //    connect(ui->rec, SIGNAL(clicked()), this, SLOT(on_rec_clicked()));
     connect(key_space, SIGNAL(activated()), this, SLOT(key_space_pressed()));
     connect(key_enter, SIGNAL(activated()), this, SLOT(key_enter_pressed()));
+    //connect(ui->table,SIGNAL(cellChanged(int, int)),ui->table,SLOT(resizeColumnsToContents()));
+    connect(ui->table,SIGNAL(cellClicked(int, int)),this,SLOT(cellClickedCallback()));
 
     resize(1900,1300);
     this->setWindowTitle("DaCToR");
@@ -127,9 +165,11 @@ MainWindow::MainWindow(QWidget *parent):
     user =  (newUser!=nullptr) ? newUser:user;
     stm = new StmManager(ui->table);
     recStateMachine = new RecStateMachine(ui, stm);
-    initWindow(user, "");
+    if (!initWindow(user, ""))
+        return;
     ui->table->item(0, 5)->setSelected(true);
     ui->table->selectRow(0);
+
 }
 
 // destructor of the MainWindow
@@ -201,11 +241,11 @@ void MainWindow::key_next()
     bool isEndReached = end_of_table(false);
     qDebug()<<" MainWindow::key_next(): isEndReached"<< isEndReached;
     if (isEndReached){
-        ui->table->setCurrentCell(ui->table->currentRow(), 5);
+        ui->table->setCurrentCell(ui->table->currentRow(), stm->STM_UTT_IDX);
         ui->rec->setChecked(false);
     }
     else {
-        ui->table->setCurrentCell(ui->table->currentRow()+1, 5);
+        ui->table->setCurrentCell(ui->table->currentRow()+1, stm->STM_UTT_IDX);
     }
     ui->table->setFocus();
 
@@ -217,11 +257,11 @@ void MainWindow::key_previous()
     qDebug()<<"MainWindow::key_previous(): isEndReached "<< isEndReached;
 
     if (isEndReached){
-        ui->table->setCurrentCell(ui->table->currentRow(), 5);
+        ui->table->setCurrentCell(ui->table->currentRow(), stm->STM_UTT_IDX);
         ui->rec->setChecked(false);
     }
     else{
-        ui->table->setCurrentCell(ui->table->currentRow()-1, 5);
+        ui->table->setCurrentCell(ui->table->currentRow()-1, stm->STM_UTT_IDX);
     }
     ui->table->setFocus();
 
@@ -257,6 +297,12 @@ void MainWindow::key_enter_pressed()
     ui->play->click();
 }
 
+void MainWindow::cellClickedCallback()
+{
+    qDebug()<<"cell clicked";
+    //ui->table->setFocus();
+}
+
 void MainWindow::prepareTable()
 {
     // init the column count
@@ -272,12 +318,14 @@ void MainWindow::prepareTable()
 
     // hide the horizontale header of the table
     ui->table->horizontalHeader()->setVisible(false);
-
+    //ui->table->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     //hide grid
     ui->table->setShowGrid(false);
   
     // disable text editing
-    ui->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //ui->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
     // set the font of the text

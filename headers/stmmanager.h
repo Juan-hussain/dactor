@@ -6,6 +6,8 @@
 #include <QTableWidget>
 #include <QFileInfo>
 #include<QTextCodec>
+#include <QMessageBox>
+
 #include "../headers/audiorecorder.h"
 /*!
     \class StmManager

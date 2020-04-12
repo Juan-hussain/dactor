@@ -63,7 +63,8 @@ public:
     long long getSaveBufferPos();
     bool saveBuff2file(QString path);
     void clearSaveBuff();
-
+    double getRecLength();
+    double getSaveLength();
     void load_audio(QString path);
 
     double getBytePerSec() const;

@@ -51,7 +51,7 @@ void settings::on_save_accepted()
 void settings::on_browseButton_clicked()
 {
     selectedText = QFileDialog::getOpenFileName(this, tr("Open Directory"), savedSettings.value("directory").toString(),
-                                                    tr("Text (*.txt)"));
+                                                    tr("Text files (*.txt);;STM files (*.stm)"));
     QFileInfo txtFile_info(selectedText);
     if (selectedText!="") {
         savedSettings.setValue("directory",txtFile_info.dir().absolutePath());

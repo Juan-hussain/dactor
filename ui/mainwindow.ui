@@ -434,7 +434,7 @@ font:bold;
                     <widget class="QTableWidget" name="table">
                      <property name="minimumSize">
                       <size>
-                       <width>82</width>
+                       <width>112</width>
                        <height>0</height>
                       </size>
                      </property>

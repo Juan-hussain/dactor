@@ -74,3 +74,13 @@ bool util::writeColsToCSV(QString csvFilename,QString csv_sep,QList<QStringList>
     return writeColsToCSV(csvFile, csv_sep,cols,msg);
 }
 
+//bool util::openFileDialog(bool WhileCondition,msg)
+//{
+//    while (WhileCondition) {
+//            QMessageBox::warning(this, tr("Warning"),
+//                                 msg,
+//                                 QMessageBox::Ok, QMessageBox::Ok);
+//            // show the setting to reselect the texts folder
+//            path_to_text = select_text();
+//     }
+//}
