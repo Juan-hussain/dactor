@@ -46,7 +46,6 @@ void AudioRecorder::record()
     audioInput->start(&wrBuff);
 
     isRecording = true;
-    finished = false;
 }
 
 void AudioRecorder::pause()
@@ -179,7 +178,6 @@ void AudioRecorder::save(QString path)
     // copy content to save to the saving buffer
     saveBuff.buffer() = rdBuff.buffer();
     saveBuff2file(path);
-    finished = true;
 }
 
 void AudioRecorder::replace_start(int start_buff_idx, int end_buff_idx)
@@ -345,7 +343,6 @@ void AudioRecorder::reset()
     isChecked = false;
     isReplacing = false;
     isRecording = false;
-    finished = false;
 
     rdBuff.buffer().clear();
     rdBuff.seek(0);
@@ -388,4 +385,9 @@ int AudioRecorder::getSampleRate() const
 void AudioRecorder::setSampleRate(int value)
 {
     SampleRate = value;
+}
+
+bool AudioRecorder::getIsRecording() const
+{
+    return isRecording;
 }

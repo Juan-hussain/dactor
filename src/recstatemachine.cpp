@@ -136,7 +136,7 @@ void RecStateMachine::stop()
 void RecStateMachine::idle_entered()
 {
     qDebug()<<"idle_entered";
-    if (!recorder.finishedRecording()) {
+    if (recorder.getIsRecording()) {
         recorder.stop();
     }
     ui->table->setFocus();

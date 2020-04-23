@@ -17,7 +17,6 @@ class AudioRecorder : public QObject
 private:
     bool isRecording;
     bool isReplacing;
-    bool finished;
     bool isChecked;
     bool playing;
     int SampleRate = 16000 ;
@@ -47,7 +46,6 @@ public:
     void replace_start(int start_buff_idx, int end_buff_idx);
     long int replace_finish(int start_buff_idx, int end_buff_idx);
     bool isRe_recording(){return isReplacing;}
-    bool finishedRecording(){return finished;}
     bool isPaused(){return isChecked;}
     bool isPlaying(){return playing;}
     bool isBufferEmpty();
@@ -76,7 +74,7 @@ public:
     int getSampleRate() const;
     void setSampleRate(int value);
 
-    bool getGetIsRecording() const;
+    bool getIsRecording() const;
 
 public slots:
     void appendBuff();
