@@ -231,6 +231,52 @@ background: none;
                       <property name="verticalSpacing">
                        <number>0</number>
                       </property>
+                      <item row="0" column="3">
+                       <widget class="QPushButton" name="rtl">
+                        <property name="maximumSize">
+                         <size>
+                          <width>50</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Stencil</family>
+                          <pointsize>20</pointsize>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="focusPolicy">
+                         <enum>Qt::NoFocus</enum>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton#rtl{
+border: 0px;
+}
+
+#rtl:hover{
+font:bold;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>&lt;T</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <spacer name="horizontalSpacer_5">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
                       <item row="0" column="2">
                        <widget class="QPushButton" name="ltr">
                         <property name="sizePolicy">
@@ -310,39 +356,6 @@ font:bold;
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="3">
-                       <widget class="QPushButton" name="rtl">
-                        <property name="maximumSize">
-                         <size>
-                          <width>50</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                        <property name="font">
-                         <font>
-                          <family>Stencil</family>
-                          <pointsize>20</pointsize>
-                          <weight>50</weight>
-                          <bold>false</bold>
-                         </font>
-                        </property>
-                        <property name="focusPolicy">
-                         <enum>Qt::NoFocus</enum>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QPushButton#rtl{
-border: 0px;
-}
-
-#rtl:hover{
-font:bold;
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>&lt;T</string>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="6">
                        <spacer name="horizontalSpacer_6">
                         <property name="orientation">
@@ -354,19 +367,6 @@ font:bold;
                         <property name="sizeHint" stdset="0">
                          <size>
                           <width>20</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="0" column="0">
-                       <spacer name="horizontalSpacer_5">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
                           <height>20</height>
                          </size>
                         </property>
@@ -408,6 +408,46 @@ font:bold;
                         </property>
                         <property name="text">
                          <string/>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QPushButton" name="save_btn">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>50</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="font">
+                         <font>
+                          <family>Wingdings</family>
+                          <pointsize>15</pointsize>
+                          <weight>50</weight>
+                          <bold>false</bold>
+                         </font>
+                        </property>
+                        <property name="focusPolicy">
+                         <enum>Qt::NoFocus</enum>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton#save_btn{
+border: 0px;
+}
+
+
+#save_btn:hover{
+font:bold;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>=</string>
                         </property>
                        </widget>
                       </item>

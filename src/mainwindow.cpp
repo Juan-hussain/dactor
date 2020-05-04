@@ -138,9 +138,10 @@ MainWindow::MainWindow(QWidget *parent):
     key_down = new QShortcut(QKeySequence(Qt::Key_Down), ui->centralWidget);
     key_left = new QShortcut(QKeySequence(Qt::Key_Left), ui->centralWidget);
     key_up = new QShortcut(QKeySequence(Qt::Key_Up), ui->centralWidget);
-    key_space = new QShortcut(QKeySequence(Qt::Key_Space), ui->centralWidget);
-    key_enter = new QShortcut(QKeySequence(Qt::Key_Return), ui->centralWidget);
-
+    key_space = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_Space), ui->centralWidget);
+    //key_enter = new QShortcut(QKeySequence(Qt::Key_Return), ui->centralWidget);
+    key_shift = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_P), ui->centralWidget);
+    key_ctrl_s = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_S), ui->centralWidget);
 //    QShortcut key_space(QKeySequence(Qt::Key_Space), ui->centralWidget);
 
     connect(key_right, SIGNAL(activated()), this, SLOT(key_next()));
@@ -149,10 +150,14 @@ MainWindow::MainWindow(QWidget *parent):
     connect(key_up, SIGNAL(activated()), this, SLOT(key_previous()));
     connect(ui->up, SIGNAL(clicked()), this, SLOT(key_previous()));
     connect(ui->down, SIGNAL(clicked()), this, SLOT(key_next()));
+    connect(ui->save_btn, SIGNAL(clicked()), this, SLOT(save_table()));
+
 //    connect(ui->rec, SIGNAL(clicked()), this, SLOT(on_rec_clicked()));
     connect(key_space, SIGNAL(activated()), this, SLOT(key_space_pressed()));
-    connect(key_enter, SIGNAL(activated()), this, SLOT(key_enter_pressed()));
-    //connect(ui->table,SIGNAL(cellChanged(int, int)),ui->table,SLOT(resizeColumnsToContents()));
+    connect(key_ctrl_s, SIGNAL(activated()), ui->save_btn, SIGNAL(clicked()));
+//    connect(key_enter, SIGNAL(activated()), this, SLOT(key_enter_pressed()));
+    connect(key_shift, SIGNAL(activated()), this, SLOT(key_shift_pressed()));
+//    connect(ui->table,SIGNAL(cellChanged(int, int)),this,SLOT(cellChangedCallback()));
     connect(ui->table,SIGNAL(cellClicked(int, int)),this,SLOT(cellClickedCallback()));
 
     resize(1900,1300);
@@ -292,7 +297,17 @@ void MainWindow::key_space_pressed()
     ui->rec->click();
 }
 
-void MainWindow::key_enter_pressed()
+bool MainWindow::save_table()
+{
+    return stm->toSTM();
+}
+//void MainWindow::key_enter_pressed()
+//{
+//    key_next();
+//    stm->toSTM();
+//}
+
+void MainWindow::key_shift_pressed()
 {
     ui->play->click();
 }
@@ -301,6 +316,11 @@ void MainWindow::cellClickedCallback()
 {
     qDebug()<<"cell clicked";
     //ui->table->setFocus();
+}
+
+void MainWindow::cellChangedCallback()
+{
+    //stm->toSTM();
 }
 
 void MainWindow::prepareTable()
@@ -325,7 +345,7 @@ void MainWindow::prepareTable()
     ui->table->setShowGrid(false);
   
     // disable text editing
-    //ui->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->table->setEditTriggers(QAbstractItemView::DoubleClicked);
 
 
     // set the font of the text

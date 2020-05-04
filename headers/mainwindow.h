@@ -67,8 +67,11 @@ private slots:
 
     bool end_of_table(bool look_upwards);
     void key_space_pressed();
-    void key_enter_pressed();
+//    void key_enter_pressed();
+    void key_shift_pressed();
     void cellClickedCallback();
+    void cellChangedCallback();
+    bool save_table();
 
 private:
     Ui::MainWindow *ui;
@@ -80,6 +83,8 @@ private:
     QShortcut *key_up;
     QShortcut *key_space;
     QShortcut *key_enter;
+    QShortcut *key_shift;
+    QShortcut *key_ctrl_s;
 
     // define the minimal and maximal allowed font sizes
     const int min_font_size = 10;

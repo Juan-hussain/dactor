@@ -139,7 +139,7 @@ void RecStateMachine::idle_entered()
     if (recorder.getIsRecording()) {
         recorder.stop();
     }
-    ui->table->setFocus();
+    //ui->table->setFocus();
 }
 
 QColor RecStateMachine::getRecColor() const
@@ -194,7 +194,7 @@ void RecStateMachine::replay_entered()
     qDebug()<<"replay_entered";
     enable_ui_elements(1,false);
 
-    ui->table->setFocus();
+    //ui->table->setFocus();
 
     int curr_row = ui->table->currentRow();
     double from = ui->table->item(curr_row, stm->STM_FROM_IDX)->data(Qt::DisplayRole).toDouble();
@@ -316,6 +316,11 @@ void RecStateMachine::replay_stop()
 void RecStateMachine::mainState_exited()
 {
     qDebug()<<"main state exited";
+}
+
+void RecStateMachine::enter_pressed()
+{
+    stm->toSTM();
 }
 
 //not used

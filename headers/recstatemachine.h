@@ -65,7 +65,7 @@ public slots:
     void replay_exited();
     void replay_stop();
     void mainState_exited();
-
+    void enter_pressed();
 
 
 signals:
