@@ -34,6 +34,14 @@ const QString USER_PROFILE_PATH = USER_WORKING_DIR + SPEAKER_PROFILE_FILENAME;
 
 
 //Messages
+const QString ERROR_WAVE_NO_STM = "An audio file exists but no stm file found"
+                                  " with same name as the chosen txt file."
+                                  " You should change the name of"
+                                  " the text file or the wave file";
+const QString ERROR_STM_NO_WAVE = "A stm file exists but no audio file found"
+                                  " with same name as the chosen txt file."
+                                  " You should change the name of"
+                                  " the text file or the wave file";
 const QString WARNING_TEXT_FILE_NOT_FOUND = "no text file found!\n"
                                              "Please choose new text file";
 const QString WARNING_WAV_FILE_NOT_FOUND = "no wave file found!\n"

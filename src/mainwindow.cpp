@@ -49,19 +49,27 @@ QString MainWindow::init_stm(QString path_to_text)
 {
     /* the cases to look at:
      * 1. empty path (login or change user)
-     *    a. user has stm (existed user): load this
+     *    a. user has stm (existed user): load this,
+     *          check(wav): no => abnormal
      *    b. no stm (new user): choose text
+     *          check(wav): yes => abnormal
      * 2. no empty path (selected text or stm)
      *    a. text file:
      *        I. exists stm: load
-     *        II. no stm: make one
+     *              check(wav): no => abnormal
+     *        II. no stm: make one:
+     *              check(wav): yes =>abnormal
      *    b. stm file:
-     *        I. exits wav : load
-     *        II. no wav: file dialog
+     *        check(wav) yes and no => normal
+     */
+    /* the algorithm
+     * if path empty => find path
+     * if file ext==txt =>
      */
 
     QString stmFile;
     QString userstmFile = user->getStmFile();
+    // case 1.b
     while (!QFile::exists(path_to_text) && !QFile::exists(userstmFile)) {
             cout << "Text or STM file not found!" << endl;
             int res = QMessageBox::warning(this, tr("Warning"),
@@ -72,7 +80,7 @@ QString MainWindow::init_stm(QString path_to_text)
             }
             path_to_text = select_text();
      }
-
+    // all other cases:
     QFileInfo txtFile_info(path_to_text);
     QString directory = txtFile_info.absolutePath();
     QString filename_base = txtFile_info.completeBaseName();
@@ -82,21 +90,29 @@ QString MainWindow::init_stm(QString path_to_text)
     if (ext == "stm") {
             QString filename_base = txtFile_info.completeBaseName();
             stmFile = path_to_text;
-    }
-    else if (ext == "txt") {
+    } else if (ext == "txt") { // case 1.b, 2.a.II, 2.a.I
             stmFile = user->getUserStmDir()+ options::PATH_SEP + filename_base +".stm";
-            stm->initNewSTM(user->getUsername(), wavFilenameBase, path_to_text,stmFile);
-            return  wavFile;
-    }
-
-    else if (QFile::exists(userstmFile)) {
+            if (QFile::exists(stmFile)){//case 2.a.I
+                if(!QFile::exists(wavFile)){
+                    QMessageBox::critical(this,tr("Error"),options::ERROR_STM_NO_WAVE);
+                    return "";
+                }
+            } else {             //case 1.b , 2.a.II
+                if(QFile::exists(wavFile)){
+                    QMessageBox::critical(this,tr("Error"),options::ERROR_WAVE_NO_STM);
+                    return "";
+                }
+                stm->initNewSTM(user->getUsername(), wavFilenameBase, path_to_text,stmFile);
+                return  wavFile;
+            }
+    } else if (QFile::exists(userstmFile)) { //case 1.a
         stmFile = userstmFile;
         QFileInfo stmFile_info(userstmFile);
         filename_base = stmFile_info.completeBaseName();
         wavFilenameBase = filename_base+".wav";
         wavFile = user->getUserAudioDir() +options::PATH_SEP+ wavFilenameBase;
     }
-
+    //check(wav)
     while (!QFile::exists(wavFile)) {
             cout << "wav file not found!" << endl;
             int res = QMessageBox::warning(this, tr("Warning"),
@@ -110,11 +126,106 @@ QString MainWindow::init_stm(QString path_to_text)
             QFileInfo wavFile_info(wavFile);
             wavFilenameBase = wavFile_info.completeBaseName();
     }
-
+    //case 2.a.I, 2.b, 1.a
     stm->initExistedSTM(user->getUsername(),wavFilenameBase,stmFile);
     return  wavFile;
 }
+//QString MainWindow::init_stm(QString path_to_text)
+//{
+//    /* the cases to look at:
+//     * 1. empty path (login or change user)
+//     *    a. user has stm (existed user): load this,
+//     *          check(wav): no => abnormal
+//     *    b. no stm (new user): choose text
+//     *          check(wav): yes => abnormal
+//     * 2. no empty path (selected text or stm)
+//     *    a. text file:
+//     *        I. exists stm: load
+//     *              check(wav): no => abnormal
+//     *        II. no stm: make one:
+//     *              check(wav): yes =>abnormal
+//     *    b. stm file:
+//     *        check(wav)
+//     */
+//    QString statecase;
+//    QString stmFile;
+//    QString userstmFile = user->getStmFile();
+//    // case 1: path empty
+//    if (path_to_text==""){
+//        if(QFile::exists(userstmFile)){
+//            statecase = "1.a";
+//        } else {
+//            statecase="1.b";
+//        }
+//    } else {
+//            QFileInfo txtFile_info(path_to_text);
+//            QString directory = txtFile_info.absolutePath();
+//            QString filename_base = txtFile_info.completeBaseName();
+//            QString ext = txtFile_info.completeSuffix();
+//            if (ext == "stm") {
+//                statecase = "2.a";
+//            }
+//            else if (ext == "txt") {
+//                statecase = "2.b";
+//            }
+//    }
 
+//    while (!QFile::exists(path_to_text) && !QFile::exists(userstmFile)) {
+//            cout << "Text or STM file not found!" << endl;
+//            int res = QMessageBox::warning(this, tr("Warning"),
+//                                 options::WARNING_TEXT_FILE_NOT_FOUND,
+//                                 QMessageBox::Ok, QMessageBox::Cancel);
+//            if (res == QMessageBox::Cancel) {
+//                return "";
+//            }
+//            path_to_text = select_text();
+//     }
+//    // all other cases:
+//    QFileInfo txtFile_info(path_to_text);
+//    QString directory = txtFile_info.absolutePath();
+//    QString filename_base = txtFile_info.completeBaseName();
+//    QString ext = txtFile_info.completeSuffix();
+//    QString wavFilenameBase = filename_base+".wav";
+//    QString wavFile = user->getUserAudioDir() +options::PATH_SEP+ wavFilenameBase;
+//    if (ext == "stm") {
+//            QString filename_base = txtFile_info.completeBaseName();
+//            stmFile = path_to_text;
+//    }
+//    else if (ext == "txt") {
+//            stmFile = user->getUserStmDir()+ options::PATH_SEP + filename_base +".stm";
+//            //case 1.b , 2.a.II
+//            if (!QFile::exists(stmFile))
+//            {
+//                stm->initNewSTM(user->getUsername(), wavFilenameBase, path_to_text,stmFile);
+//                return  wavFile;
+//            }
+//    }
+//    //case 1.a
+//    else if (QFile::exists(userstmFile)) {
+//        stmFile = userstmFile;
+//        QFileInfo stmFile_info(userstmFile);
+//        filename_base = stmFile_info.completeBaseName();
+//        wavFilenameBase = filename_base+".wav";
+//        wavFile = user->getUserAudioDir() +options::PATH_SEP+ wavFilenameBase;
+//    }
+//    //case 2.b.II
+//    while (!QFile::exists(wavFile)) {
+//            cout << "wav file not found!" << endl;
+//            int res = QMessageBox::warning(this, tr("Warning"),
+//                                 options::WARNING_WAV_FILE_NOT_FOUND,
+//                                 QMessageBox::Ok, QMessageBox::Cancel);
+//            if (res == QMessageBox::Cancel) {
+//                return "";
+//            }
+//            wavFile = QFileDialog::getOpenFileName(this, tr("Open Directory"), directory,
+//                                                            tr("WAV files (*.wav)"));
+//            QFileInfo wavFile_info(wavFile);
+//            wavFilenameBase = wavFile_info.completeBaseName();
+//    }
+
+//    stm->initExistedSTM(user->getUsername(),wavFilenameBase,stmFile);
+//    return  wavFile;
+//}
 
 // constructor of the MainWindow
 MainWindow::MainWindow(QWidget *parent):
