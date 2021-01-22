@@ -23,7 +23,8 @@ bool StmManager::initNewSTM(QString spk,QString wav, QString txtFile, QString ne
 {
 
     this->spk = spk;
-    this->wav = wav.replace(' ','_');
+    QFileInfo wavFile_info(wav.replace(' ','_'));
+    this->wav = wavFile_info.completeBaseName();
     this->stmFilename = newSTMFile;
 
     QFileInfo txtFile_info(txtFile);
@@ -32,7 +33,7 @@ bool StmManager::initNewSTM(QString spk,QString wav, QString txtFile, QString ne
         return false;
     }
 
-    QString baseName = txtFile_info.completeBaseName();
+    //QString baseName = txtFile_info.completeBaseName();
 
     qDebug() << stmFilename;
     qDebug()<< "no stm, make one!";
