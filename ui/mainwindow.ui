@@ -231,8 +231,21 @@ background: none;
                       <property name="verticalSpacing">
                        <number>0</number>
                       </property>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_user">
+                        <property name="text">
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;User&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        </property>
+                       </widget>
+                      </item>
                       <item row="0" column="3">
-                       <widget class="QPushButton" name="rtl">
+                       <widget class="QPushButton" name="save_btn">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
                         <property name="maximumSize">
                          <size>
                           <width>50</width>
@@ -241,8 +254,8 @@ background: none;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Stencil</family>
-                          <pointsize>20</pointsize>
+                          <family>Wingdings</family>
+                          <pointsize>15</pointsize>
                           <weight>50</weight>
                           <bold>false</bold>
                          </font>
@@ -251,33 +264,21 @@ background: none;
                          <enum>Qt::NoFocus</enum>
                         </property>
                         <property name="styleSheet">
-                         <string notr="true">QPushButton#rtl{
+                         <string notr="true">QPushButton#save_btn{
 border: 0px;
 }
 
-#rtl:hover{
+
+#save_btn:hover{
 font:bold;
 }</string>
                         </property>
                         <property name="text">
-                         <string>&lt;T</string>
+                         <string>=</string>
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="0">
-                       <spacer name="horizontalSpacer_5">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="0" column="2">
+                      <item row="0" column="4">
                        <widget class="QPushButton" name="ltr">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -317,62 +318,7 @@ font:bold;
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="5">
-                       <widget class="QPushButton" name="text_minus">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>30</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>95</width>
-                          <height>95</height>
-                         </size>
-                        </property>
-                        <property name="focusPolicy">
-                         <enum>Qt::NoFocus</enum>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QPushButton#text_minus{
-	image: url(:icons/size_minus_empty.svg);
-     border-style: solid;
-     border-width: 0px;
-     border-color: gray;
-}
-#text_minus:hover{
-	 image: url(:icons/size_minus_full.svg);
-}</string>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="6">
-                       <spacer name="horizontalSpacer_6">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeType">
-                         <enum>QSizePolicy::Fixed</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>20</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item row="0" column="4">
                        <widget class="QPushButton" name="text_plus">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -411,14 +357,8 @@ font:bold;
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="1">
-                       <widget class="QPushButton" name="save_btn">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
+                      <item row="0" column="5">
+                       <widget class="QPushButton" name="rtl">
                         <property name="maximumSize">
                          <size>
                           <width>50</width>
@@ -427,8 +367,8 @@ font:bold;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Wingdings</family>
-                          <pointsize>15</pointsize>
+                          <family>Stencil</family>
+                          <pointsize>20</pointsize>
                           <weight>50</weight>
                           <bold>false</bold>
                          </font>
@@ -437,17 +377,91 @@ font:bold;
                          <enum>Qt::NoFocus</enum>
                         </property>
                         <property name="styleSheet">
-                         <string notr="true">QPushButton#save_btn{
+                         <string notr="true">QPushButton#rtl{
 border: 0px;
 }
 
-
-#save_btn:hover{
+#rtl:hover{
 font:bold;
 }</string>
                         </property>
                         <property name="text">
-                         <string>=</string>
+                         <string>&lt;T</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="8">
+                       <spacer name="horizontalSpacer_6">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                         <enum>QSizePolicy::Fixed</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>20</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item row="0" column="7">
+                       <widget class="QPushButton" name="text_minus">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>30</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>95</width>
+                          <height>95</height>
+                         </size>
+                        </property>
+                        <property name="focusPolicy">
+                         <enum>Qt::NoFocus</enum>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton#text_minus{
+	image: url(:icons/size_minus_empty.svg);
+     border-style: solid;
+     border-width: 0px;
+     border-color: gray;
+}
+#text_minus:hover{
+	 image: url(:icons/size_minus_full.svg);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="2">
+                       <spacer name="horizontalSpacer_5">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLabel" name="label_file">
+                        <property name="text">
+                         <string>File</string>
                         </property>
                        </widget>
                       </item>

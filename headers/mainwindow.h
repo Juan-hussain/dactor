@@ -103,7 +103,7 @@ private:
     void prepareTable();
     void postpareTable();
     QString select_text();
-    QString init_stm(QString path_to_text);
+    QString init_stm(QString path_to_text, User *user);
 
 public:
 

@@ -25,11 +25,12 @@ User* MainWindow::log_in(bool closeIfCancel){
 
 bool MainWindow::initWindow(User* user, QString path_to_text)
 {
-    recStateMachine->stop();
-    QString wavFile = init_stm(path_to_text);
+//    recStateMachine->stop();
+    QString wavFile = init_stm(path_to_text, user);
     if(wavFile=="")
         return false;
-
+    // stop to restart later
+    recStateMachine->stop();
     tableFont.setPointSize(12);
 
     ui->next->setVisible(false);
@@ -40,12 +41,13 @@ bool MainWindow::initWindow(User* user, QString path_to_text)
     user->setStmFile(stmFile);
     userRecords->setUserStm(user->getUsername(),stmFile);
     postpareTable();
-
+    ui->label_user->setText(user->getUsername());
+    ui->label_file->setText(user->getStmFile());
     recStateMachine->init(wavFile);
     return true;
 }
 
-QString MainWindow::init_stm(QString path_to_text)
+QString MainWindow::init_stm(QString path_to_text, User *user)
 {
     /* the cases to look at:
      * 1. empty path (login or change user)
@@ -338,11 +340,11 @@ QString MainWindow::select_text()
 
 void MainWindow::on_add_user_clicked()
 {
-    user = log_in(false);
-    if (user!=nullptr)
+    User *newUser = log_in(false);
+    if (newUser!=nullptr)
     {
-        recStateMachine->stop();
-        initWindow(user,"");
+        if (initWindow(newUser,""))
+            user=newUser;
     }
 }
 
