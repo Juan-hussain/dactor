@@ -112,9 +112,10 @@ void RecStateMachine::init(QString wavFile)
 
     resizeTable();
 
-    if (!QFile(wavFile).exists())
+    if (!QFile(wavFile).exists()){
+        recorder.save(wavFile);
         qDebug()<< "RecStateMachine::init(): There is no audio file.. load one";
-    else
+    } else
         recorder.load_audio(wavFile);
     Q_ASSERT(!machine.isRunning());
 //    if (machine.isRunning()) {
