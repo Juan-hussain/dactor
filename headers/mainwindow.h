@@ -30,7 +30,7 @@
 #include "options.h"
 #include "user.h"
 #include "userRecords.h"
-
+#include "editdialog.h"
 using namespace std;
 
 namespace Ui {
@@ -69,7 +69,7 @@ private slots:
     void key_space_pressed();
 //    void key_enter_pressed();
     void key_shift_pressed();
-    void cellClickedCallback();
+    void cellClickedCallback(int r, int c);
     void cellChangedCallback();
     bool save_table();
 
@@ -85,7 +85,8 @@ private:
     QShortcut *key_enter;
     QShortcut *key_shift;
     QShortcut *key_ctrl_s;
-
+    EditDialog* editor;
+    QTableWidgetItem *editedItem;
     // define the minimal and maximal allowed font sizes
     const int min_font_size = 10;
     const int max_font_size = 34;
@@ -120,6 +121,7 @@ private slots:
     void on_play_clicked();
     void on_ltr_clicked();
     void on_rtl_clicked();
+    void editorApply();
 };
 
 

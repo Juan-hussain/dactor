@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>279</width>
     <height>150</height>
    </rect>
   </property>
@@ -32,7 +32,7 @@
    <enum>Qt::NoFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Login</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#LogInForm{

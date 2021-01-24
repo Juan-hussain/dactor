@@ -256,6 +256,7 @@ MainWindow::MainWindow(QWidget *parent):
     key_shift = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_P), ui->centralWidget);
     key_ctrl_s = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_S), ui->centralWidget);
 //    QShortcut key_space(QKeySequence(Qt::Key_Space), ui->centralWidget);
+    editor= new EditDialog(this);
 
     connect(key_right, SIGNAL(activated()), this, SLOT(key_next()));
     connect(key_down, SIGNAL(activated()), this, SLOT(key_next()));
@@ -271,7 +272,8 @@ MainWindow::MainWindow(QWidget *parent):
 //    connect(key_enter, SIGNAL(activated()), this, SLOT(key_enter_pressed()));
     connect(key_shift, SIGNAL(activated()), this, SLOT(key_shift_pressed()));
 //    connect(ui->table,SIGNAL(cellChanged(int, int)),this,SLOT(cellChangedCallback()));
-    connect(ui->table,SIGNAL(cellClicked(int, int)),this,SLOT(cellClickedCallback()));
+    connect(ui->table,SIGNAL(cellDoubleClicked(int, int)),this,SLOT(cellClickedCallback(int,int)));
+    connect(editor,SIGNAL(apply()),this,SLOT(editorApply()));
 
     resize(1900,1300);
     this->setWindowTitle("DaCToR");
@@ -425,12 +427,21 @@ void MainWindow::key_shift_pressed()
     ui->play->click();
 }
 
-void MainWindow::cellClickedCallback()
+void MainWindow::cellClickedCallback(int r, int c)
 {
     qDebug()<<"cell clicked";
+    this->editedItem= ui->table->item(r,c);
+    editor->setText(this->editedItem->text(),static_cast<Qt::Alignment>(this->editedItem->textAlignment()),ui->table->font());
+    editor->show();
+
+
     //ui->table->setFocus();
 }
-
+void MainWindow::editorApply()
+{
+    QString text = editor->getText();
+    this->editedItem->setText(text);
+}
 void MainWindow::cellChangedCallback()
 {
     //stm->toSTM();
@@ -458,7 +469,7 @@ void MainWindow::prepareTable()
     ui->table->setShowGrid(false);
   
     // disable text editing
-    ui->table->setEditTriggers(QAbstractItemView::DoubleClicked);
+    ui->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
     // set the font of the text

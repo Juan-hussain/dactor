@@ -29,6 +29,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        src/editdialog.cpp \
         src/loginform.cpp \
         src/conditionaltransitions.cpp \
         src/main.cpp \
@@ -46,6 +47,7 @@ SOURCES += \
 
 
 HEADERS += \
+        headers/editdialog.h \
         headers/loginform.h \
         headers/conditionaltransitions.h \
         headers/mainwindow.h \
@@ -63,6 +65,7 @@ HEADERS += \
         headers/wavepcmfile.h
 
 FORMS += \
+        ui/editdialog.ui \
         ui/loginform.ui \
         ui/mainwindow.ui \
         ui/settings.ui \
